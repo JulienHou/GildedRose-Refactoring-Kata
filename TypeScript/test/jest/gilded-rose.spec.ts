@@ -33,8 +33,8 @@ describe("Gilded Rose", () => {
     });
 
     it("quality should not be negative", () => {
-      const sellIn = 5;
-      const quality = 2;
+      const sellIn = 2;
+      const quality = 1;
       const gildedRose = new GildedRose([new Item(name, sellIn, quality)]);
 
       gildedRose.updateQuality();
@@ -85,7 +85,7 @@ describe("Gilded Rose", () => {
     });
 
     it("quality should not be more than 50", () => {
-      const sellIn = 6;
+      const sellIn = 2;
       const quality = 49;
       const gildedRose = new GildedRose([new Item(name, sellIn, quality)]);
 
@@ -108,6 +108,18 @@ describe("Gilded Rose", () => {
       expect(items[0].name).toBe(name);
       expect(items[0].sellIn).toBe(sellIn - 1);
       expect(items[0].quality).toBe(quality + 2);
+    });
+
+    it("sellIn negative should improve quality twice faster but no more than 50", () => {
+      const sellIn = 0;
+      const quality = 50;
+      const gildedRose = new GildedRose([new Item(name, sellIn, quality)]);
+
+      const items = gildedRose.updateQuality();
+
+      expect(items[0].name).toBe(name);
+      expect(items[0].sellIn).toBe(sellIn - 1);
+      expect(items[0].quality).toBe(50);
     });
   });
 
