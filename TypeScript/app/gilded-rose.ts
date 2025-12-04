@@ -1,3 +1,6 @@
+export const MAX_QUALITY = 50;
+export const MIN_QUALITY = 0;
+
 export class Item {
   name: string;
   sellIn: number;
@@ -22,8 +25,8 @@ export class GildedRose {
       switch (item.name) {
         case "Aged Brie":
           item.sellIn--;
-          item.quality < 50 && item.quality++;
-          item.sellIn < 0 && item.quality < 50 && item.quality++;
+          item.quality < MAX_QUALITY && item.quality++;
+          item.sellIn < 0 && item.quality < MAX_QUALITY && item.quality++;
           break;
 
         case "Sulfuras, Hand of Ragnaros":
@@ -31,15 +34,15 @@ export class GildedRose {
 
         case "Backstage passes to a TAFKAL80ETC concert":
           item.sellIn--;
-          item.quality < 50 && item.quality++;
-          item.sellIn < 10 && item.quality < 50 && item.quality++;
-          item.sellIn < 5 && item.quality < 50 && item.quality++;
-          item.sellIn < 0 && (item.quality = 0);
+          item.quality < MAX_QUALITY && item.quality++;
+          item.sellIn < 10 && item.quality < MAX_QUALITY && item.quality++;
+          item.sellIn < 5 && item.quality < MAX_QUALITY && item.quality++;
+          item.sellIn < 0 && (item.quality = MIN_QUALITY);
           break;
 
         default:
           item.sellIn--;
-          item.quality > 0 && item.quality--;
+          item.quality > MIN_QUALITY && item.quality--;
           item.sellIn < 0 && item.quality > 0 && item.quality--;
           break;
       }
