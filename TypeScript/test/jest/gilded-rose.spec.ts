@@ -110,4 +110,42 @@ describe("Gilded Rose", () => {
       expect(items[0].quality).toBe(quality + 2);
     });
   });
+
+  describe("Sulfuras, Hand of Ragnaros", () => {
+    const name = "Sulfuras, Hand of Ragnaros";
+    const quality = 80;
+    it("should be properly initiated", () => {
+      const sellIn = 5;
+      const gildedRose = new GildedRose([new Item(name, sellIn, quality)]);
+      const items = gildedRose.items;
+
+      expect(items[0].name).toBe(name);
+      expect(items[0].sellIn).toBe(sellIn);
+      expect(items[0].quality).toBe(quality);
+    });
+
+    it("should not change quality and sellIn", () => {
+      const sellIn = 5;
+      const gildedRose = new GildedRose([new Item(name, sellIn, quality)]);
+
+      const items = gildedRose.updateQuality();
+
+      expect(items[0].name).toBe(name);
+      expect(items[0].sellIn).toBe(sellIn);
+      expect(items[0].quality).toBe(quality);
+    });
+
+    it("should not change quality and sellIn over time", () => {
+      const sellIn = -1;
+      const gildedRose = new GildedRose([new Item(name, sellIn, quality)]);
+
+      gildedRose.updateQuality();
+      gildedRose.updateQuality();
+      const items = gildedRose.updateQuality();
+
+      expect(items[0].name).toBe(name);
+      expect(items[0].sellIn).toBe(sellIn);
+      expect(items[0].quality).toBe(quality);
+    });
+  });
 });
