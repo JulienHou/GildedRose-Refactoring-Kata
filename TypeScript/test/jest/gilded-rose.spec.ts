@@ -1,4 +1,4 @@
-import { Item, GildedRose } from "@/gilded-rose";
+import { Item, GildedRose, MIN_QUALITY, MAX_QUALITY } from "@/gilded-rose";
 
 describe("Gilded Rose", () => {
   it("should foo", () => {
@@ -43,7 +43,7 @@ describe("Gilded Rose", () => {
 
       expect(items[0].name).toBe(name);
       expect(items[0].sellIn).toBe(sellIn - 3);
-      expect(items[0].quality).toBe(0);
+      expect(items[0].quality).toBe(MIN_QUALITY);
     });
 
     it("sellIn negative should degrade quality twice faster", () => {
@@ -119,7 +119,7 @@ describe("Gilded Rose", () => {
 
       expect(items[0].name).toBe(name);
       expect(items[0].sellIn).toBe(sellIn - 1);
-      expect(items[0].quality).toBe(50);
+      expect(items[0].quality).toBe(MAX_QUALITY);
     });
   });
 
@@ -221,7 +221,7 @@ describe("Gilded Rose", () => {
 
       expect(items[0].name).toBe(name);
       expect(items[0].sellIn).toBe(sellIn - 3);
-      expect(items[0].quality).toBe(0);
+      expect(items[0].quality).toBe(MIN_QUALITY);
     });
 
     it("quality should drop to 0 when sellIn <= 0", () => {
@@ -233,7 +233,19 @@ describe("Gilded Rose", () => {
 
       expect(items[0].name).toBe(name);
       expect(items[0].sellIn).toBe(sellIn - 1);
-      expect(items[0].quality).toBe(0);
+      expect(items[0].quality).toBe(MIN_QUALITY);
+    });
+
+    it("should improve quality but no more than 50", () => {
+      const sellIn = 6;
+      const quality = 50;
+      const gildedRose = new GildedRose([new Item(name, sellIn, quality)]);
+
+      const items = gildedRose.updateQuality();
+
+      expect(items[0].name).toBe(name);
+      expect(items[0].sellIn).toBe(sellIn - 1);
+      expect(items[0].quality).toBe(MAX_QUALITY);
     });
   });
 });
