@@ -40,17 +40,26 @@ export class GildedRose {
     item.sellIn < 0 && item.quality > 0 && item.quality--;
   }
 
+  classifyItemType(itemType: string) {
+    // Should be checked with business but there could be some clarification between the legacy code nad the original requirements
+    if (itemType.includes("Aged Brie")) return "Brie";
+    if (itemType.includes("Sulfuras, Hand of Ragnaros")) return "Sulfuras";
+    if (itemType.includes("Backstage passes")) return "Backstage";
+    return "normal";
+  }
+
   updateQuality() {
     this.items.map((item) => {
-      switch (item.name) {
-        case "Aged Brie":
+      const itemType = this.classifyItemType(item.name);
+      switch (itemType) {
+        case "Brie":
           this.updateAgedBrie(item);
           break;
 
-        case "Sulfuras, Hand of Ragnaros":
+        case "Sulfuras":
           break;
 
-        case "Backstage passes to a TAFKAL80ETC concert":
+        case "Backstage":
           this.updateBackstagePass(item);
           break;
 
