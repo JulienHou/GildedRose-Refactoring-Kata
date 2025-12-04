@@ -248,4 +248,56 @@ describe("Gilded Rose", () => {
       expect(items[0].quality).toBe(MAX_QUALITY);
     });
   });
+
+  describe("Conjured item", () => {
+    const name = "Conjured Mana Cake";
+    it("should be properly initiated", () => {
+      const sellIn = 5;
+      const quality = 10;
+      const gildedRose = new GildedRose([new Item(name, sellIn, quality)]);
+      const items = gildedRose.items;
+
+      expect(items[0].name).toBe(name);
+      expect(items[0].sellIn).toBe(sellIn);
+      expect(items[0].quality).toBe(quality);
+    });
+
+    it("should decrease quality", () => {
+      const sellIn = 5;
+      const quality = 10;
+      const gildedRose = new GildedRose([new Item(name, sellIn, quality)]);
+
+      const items = gildedRose.updateQuality();
+
+      expect(items[0].name).toBe(name);
+      expect(items[0].sellIn).toBe(sellIn - 1);
+      expect(items[0].quality).toBe(quality - 2);
+    });
+
+    it("quality should not be negative", () => {
+      const sellIn = 2;
+      const quality = 1;
+      const gildedRose = new GildedRose([new Item(name, sellIn, quality)]);
+
+      gildedRose.updateQuality();
+      gildedRose.updateQuality();
+      const items = gildedRose.updateQuality();
+
+      expect(items[0].name).toBe(name);
+      expect(items[0].sellIn).toBe(sellIn - 3);
+      expect(items[0].quality).toBe(MIN_QUALITY);
+    });
+
+    it("sellIn negative should degrade quality twice faster", () => {
+      const sellIn = 0;
+      const quality = 5;
+      const gildedRose = new GildedRose([new Item(name, sellIn, quality)]);
+
+      const items = gildedRose.updateQuality();
+
+      expect(items[0].name).toBe(name);
+      expect(items[0].sellIn).toBe(sellIn - 1);
+      expect(items[0].quality).toBe(quality - 4);
+    });
+  });
 });
