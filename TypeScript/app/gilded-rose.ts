@@ -40,11 +40,19 @@ export class GildedRose {
     item.sellIn < 0 && item.quality > 0 && item.quality--;
   }
 
+  updateConjured(item: Item) {
+    item.sellIn--;
+    item.quality -= 2;
+    item.sellIn < 0 && item.quality > 0 && (item.quality -= 2);
+    item.quality < 0 && (item.quality = 0);
+  }
+
   classifyItemType(itemType: string) {
     // Should be checked with business but there could be some clarification between the legacy code nad the original requirements
     if (itemType.includes("Aged Brie")) return "Brie";
     if (itemType.includes("Sulfuras, Hand of Ragnaros")) return "Sulfuras";
     if (itemType.includes("Backstage passes")) return "Backstage";
+    if (itemType.includes("Conjured")) return "Conjured";
     return "normal";
   }
 
@@ -61,6 +69,10 @@ export class GildedRose {
 
         case "Backstage":
           this.updateBackstagePass(item);
+          break;
+
+        case "Conjured":
+          this.updateConjured(item);
           break;
 
         default:
